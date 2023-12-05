@@ -70,7 +70,7 @@ public class ListDBTest {
         var employeeFound = listDB.findByName(name2);
         listDB.delete(employeeFound);
 
-        assertEquals(employeeFound.getName(), name2);
-        assertEquals(listDB.findAll().size(), 2);
+        assertEquals(name2, employeeFound.getName());
+        assertEquals(2, listDB.findAll().size());
     }
 }

@@ -9,8 +9,8 @@ import lombok.Data;
 @Data
 public class Person {
 
-    private String name;
-    private LocalDate birthDate;
+    protected String name;
+    protected LocalDate birthDate;
 
     public Person(String name, LocalDate birthDate) {
         if (name == null || name.isBlank()) {

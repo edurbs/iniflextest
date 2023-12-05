@@ -10,7 +10,7 @@ import com.iniflex.erp.infra.listdb.exceptions.EmployeeNotFoundException;
 
 public class ListDB implements EmployeeRepository {
     
-    private static List<Employee> listEmployees = new ArrayList<>();
+    private List<Employee> listEmployees = new ArrayList<>();
     
     @Override
     public void save(Employee employee) {

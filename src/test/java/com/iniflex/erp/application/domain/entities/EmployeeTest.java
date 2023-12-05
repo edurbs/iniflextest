@@ -13,16 +13,26 @@ import com.iniflex.erp.domain.entities.exceptions.IllegalFieldException;
 
 public class EmployeeTest {
 
+    
+    private Employee employeeFactory() {
+        String name = "some name";
+        LocalDate birthDate = LocalDate.of(2000, 1, 2);
+        BigDecimal salary = new BigDecimal(2009.44);
+        String position = "some position";
+        var employee = new Employee(name, birthDate, salary, position);
+        return employee;
+    }
+
 
     @Test
     void shouldCreateEmployeeWithValidFields() {
 
         String name = "some name";
-        LocalDate birthDate = LocalDate.of(2000, 10, 18);
+        LocalDate birthDate = LocalDate.of(2000, 1, 2);
         BigDecimal salary = new BigDecimal(2009.44);
         String position = "some position";
 
-        var employee = new Employee(name, birthDate, salary, position);
+        var employee = employeeFactory();
 
         Assertions.assertEquals(name, employee.getName());
         Assertions.assertEquals(birthDate, employee.getBirthDate());
@@ -116,6 +126,19 @@ public class EmployeeTest {
         String position = "";
         Assertions.assertThrowsExactly(EmptyFieldException.class,
                 () -> new Employee(name, birthDate, salary, position));
+    }
+
+    @Test
+    void shouldReturnFormatedBirthDate() {
+        var employee = employeeFactory();
+        Assertions.assertEquals("02/01/2000", employee.getFormatedBirhDate());
+    }
+
+
+    @Test
+    void shouldReturnFormatedSalary() {
+        var employee = employeeFactory();
+        Assertions.assertEquals("2.009,44", employee.getFormatedSalary());
     }
 
 }

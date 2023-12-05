@@ -51,7 +51,7 @@ public class App {
 		// • informação de valor numérico deve ser exibida no formatado com separador de
 		//   milhar como ponto e decimal como vírgula.
 		var foundEmployees = listDB.findAll();
-		foundEmployees.forEach(emp -> System.out.println(emp.getName() + " " + emp.getBirthDate()+ " " +emp.getSalary()+ " " +emp.getPosition()));
+		foundEmployees.forEach(emp -> System.out.println(emp.getName() + " " + emp.getFormatedBirhDate()+ " " +emp.getFormatedSalary()+ " " +emp.getPosition()));
 
 	}
 

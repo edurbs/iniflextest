@@ -1,7 +1,9 @@
 package com.iniflex.erp.domain.entities;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.Locale;
 
 import com.iniflex.erp.domain.entities.exceptions.EmptyFieldException;
 import com.iniflex.erp.domain.entities.exceptions.IllegalFieldException;
@@ -32,5 +34,18 @@ public class Employee extends Person {
         }
         this.salary = salary;
         this.position = position;
+    }
+
+    public String getFormatedSalary() {        
+        var brazilianFormat = NumberFormat.getInstance(new Locale("pt", "BR"));        
+        return brazilianFormat.format(salary);
+    }
+
+    public String getFormatedBirhDate(){
+        
+        var day = String.format("%02d", birthDate.getDayOfMonth());
+        var month = String.format("%02d", birthDate.getMonthValue());
+
+        return day + "/" + month + "/" + birthDate.getYear();
     }
 }
