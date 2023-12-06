@@ -12,12 +12,13 @@ import java.util.Map;
 
 import com.iniflex.erp.application.usecases.RegistryEmployeeService;
 import com.iniflex.erp.domain.entities.Employee;
+import com.iniflex.erp.domain.entities.factory.EmployeeFactory;
 import com.iniflex.erp.infra.listdb.ListDB;
 
 public class App {
 	private static RegistryEmployeeService registryEmployeeService = new RegistryEmployeeService(new ListDB());
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
 
 		System.out.println("\n3.1 Inserir todos os funcionários, na mesma ordem e informações da tabela acima.");
 		addAll();
@@ -27,14 +28,17 @@ public class App {
 
 		System.out.println("\n3.3 Imprimir todos os funcionários com todas suas informações, sendo que:");
 		System.out.println(" • informação de data deve ser exibido no formato dd/mm/aaaa;");
-		System.out.println(" • informação de valor numérico deve ser exibida no formatado com separador de milhar como ponto e decimal como vírgula.");
+		System.out.println(
+				" • informação de valor numérico deve ser exibida no formatado com separador de milhar como ponto e decimal como vírgula.");
 		printFormatted();
 
-		System.out.println("\n3.4 Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionários com novo valor.");
-		increaseAllSalary();		
+		System.out.println(
+				"\n3.4 Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionários com novo valor.");
+		increaseAllSalary();
 
-		System.out.println("\n3.5 Agrupar os funcionários por função em um MAP, sendo a chave a 'função' e o valor a 'lista de funcionários'.");
-		Map<String, List<Employee>> groupByPosition = getGroupByPosition();		
+		System.out.println(
+				"\n3.5 Agrupar os funcionários por função em um MAP, sendo a chave a 'função' e o valor a 'lista de funcionários'.");
+		Map<String, List<Employee>> groupByPosition = getGroupByPosition();
 
 		System.out.println("\n3.6 Imprimir os funcionários, agrupados por função.");
 		printByPosition(groupByPosition);
@@ -52,7 +56,8 @@ public class App {
 		System.out.println("\n3.11 Imprimir o total dos salários dos funcionários.");
 		printSumOfSalaries();
 
-		System.out.println("\n3.12 Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.");
+		System.out.println(
+				"\n3.12 Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.");
 		printMinimumWageByEmployee();
 
 	}
@@ -60,14 +65,12 @@ public class App {
 	private static void printMinimumWageByEmployee() {
 		List<Employee> foundEmployees = registryEmployeeService.findAll();
 		foundEmployees.forEach(employee -> System.out.println(
-				employee.getName() 
-				+ " ganha " 
-				+ employee.getFormatedSalary()
-				+ " que é correspondente a "
-				+ getHowManyMinimumWage(employee.getSalary())
-				+ " salários mínimos."
-			)
-		);
+				employee.getName()
+						+ " ganha "
+						+ employee.getFormatedSalary()
+						+ " que é correspondente a "
+						+ getHowManyMinimumWage(employee.getSalary())
+						+ " salários mínimos."));
 	}
 
 	private static String getHowManyMinimumWage(BigDecimal salary) {
@@ -77,25 +80,25 @@ public class App {
 	}
 
 	private static void printSumOfSalaries() {
-		var brazilianFormat = NumberFormat.getInstance(new Locale("pt", "BR"));                
+		var brazilianFormat = NumberFormat.getInstance(new Locale("pt", "BR"));
 		BigDecimal totalSalary = registryEmployeeService.getSumOfSalaries();
 		String totalSalaryFormatted = brazilianFormat.format(totalSalary.setScale(2, RoundingMode.HALF_UP));
 		System.out.println("Total dos salários: " + totalSalaryFormatted);
 	}
 
 	private static void printEmployeesOrderedByName() {
-		List<Employee> foundEmployees = registryEmployeeService.findAllOrderByName();		
+		List<Employee> foundEmployees = registryEmployeeService.findAllOrderByName();
 		foundEmployees.forEach(employee -> System.out.println(employee.getName()));
 	}
 
-	private static void printEmployeeWithBiggestAge() {				
+	private static void printEmployeeWithBiggestAge() {
 		Employee biggestAge = registryEmployeeService.findWithBiggestAge();
 		System.out.println(biggestAge.getName() + " - " + biggestAge.getAge());
 	}
 
 	private static void printEmployeesWithBirthMonth(int month) {
 		List<Employee> foundEmployees = registryEmployeeService.findAllByBirthMonth(month);
-		if(foundEmployees.isEmpty()) {
+		if (foundEmployees.isEmpty()) {
 			System.out.printf("Nenhum funcionário com data de nascimento no mês %s.\n", month);
 			return;
 		}
@@ -106,7 +109,7 @@ public class App {
 	private static void printByPosition(Map<String, List<Employee>> groupByPosition) {
 		groupByPosition.forEach((key, value) -> {
 			System.out.println(key + ": ");
-			value.forEach(employee -> System.out.print(" - "+ employee.getName()));
+			value.forEach(employee -> System.out.print(" - " + employee.getName()));
 			System.out.println("");
 		});
 	}
@@ -126,7 +129,7 @@ public class App {
 	}
 
 	private static void increaseAllSalary() {
-		registryEmployeeService.increaseAllSalariesByPercentage(10);			
+		registryEmployeeService.increaseAllSalariesByPercentage(10);
 	}
 
 	private static void removeJoao() {
@@ -142,19 +145,20 @@ public class App {
 
 	private static void printFormatted() {
 		List<Employee> foundEmployees = registryEmployeeService.findAll();
-		foundEmployees.forEach(emp -> System.out.println(emp.getName() + " " + emp.getFormatedBirhDate()+ " " +emp.getFormatedSalary()+ " " +emp.getPosition()));
+		foundEmployees.forEach(emp -> System.out.println(emp.getName() + " " + emp.getFormatedBirhDate() + " "
+				+ emp.getFormatedSalary() + " " + emp.getPosition()));
 	}
 
 	private static void addNames(List<Employee> listEmployees) {
-		listEmployees.add(new Employee("Maria", LocalDate.of(2000, 10, 18), BigDecimal.valueOf(2009.44), "Operador"));
-		listEmployees.add(new Employee("João", LocalDate.of(1990, 5, 12), BigDecimal.valueOf(2284.38), "Operador"));
-		listEmployees.add(new Employee("Caio", LocalDate.of(1961, 5, 2), BigDecimal.valueOf(9836.14), "Coordenador"));
-		listEmployees.add(new Employee("Miguel", LocalDate.of(1988, 10, 14), BigDecimal.valueOf(19119.88), "Diretor"));
-		listEmployees.add(new Employee("Alice", LocalDate.of(1995, 1, 05), BigDecimal.valueOf(2234.68), "Recepcionista"));
-		listEmployees.add(new Employee("Heitor", LocalDate.of(1999, 11, 19), BigDecimal.valueOf(1582.72), "Operador"));
-		listEmployees.add(new Employee("Arthur", LocalDate.of(1993, 3, 31), BigDecimal.valueOf(4071.84), "Contador"));
-		listEmployees.add(new Employee("Laura", LocalDate.of(1994, 7, 8), BigDecimal.valueOf(3017.45), "Gerente"));
-		listEmployees.add(new Employee("Heloísa", LocalDate.of(2003, 5, 24), BigDecimal.valueOf(1606.85), "Eletricista"));
-		listEmployees.add(new Employee("Helena", LocalDate.of(1996, 9, 2), BigDecimal.valueOf(2799.93), "Gerente"));
-	}
+		listEmployees.add(EmployeeFactory.create("Maria", 2000, 10, 18, 2009.44, "Operador"));
+		listEmployees.add(EmployeeFactory.create("João", 1990, 5, 12, 2284.38, "Operador"));
+		listEmployees.add(EmployeeFactory.create("Caio", 1961, 5, 2, 9836.14, "Coordenador"));
+		listEmployees.add(EmployeeFactory.create("Miguel", 1988, 10, 14, 19119.88, "Diretor"));
+		listEmployees.add(EmployeeFactory.create("Alice", 1995, 1, 05, 2234.68, "Recepcionista"));
+		listEmployees.add(EmployeeFactory.create("Heitor", 1999, 11, 19, 1582.72, "Operador"));
+		listEmployees.add(EmployeeFactory.create("Arthur", 1993, 3, 31, 4071.84, "Contador"));
+		listEmployees.add(EmployeeFactory.create("Laura", 1994, 7, 8, 3017.45, "Gerente"));
+		listEmployees.add(EmployeeFactory.create("Heloísa", 2003, 5, 24, 1606.85, "Eletricista"));
+		listEmployees.add(EmployeeFactory.create("Helena", 1996, 9, 2, 2799.93, "Gerente"));
+	}	
 }
