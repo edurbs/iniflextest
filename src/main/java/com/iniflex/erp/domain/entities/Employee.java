@@ -3,6 +3,7 @@ package com.iniflex.erp.domain.entities;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Locale;
 
 import com.iniflex.erp.domain.entities.exceptions.EmptyFieldException;
@@ -47,5 +48,11 @@ public class Employee extends Person {
         var month = String.format("%02d", birthDate.getMonthValue());
 
         return day + "/" + month + "/" + birthDate.getYear();
+    }
+
+    public int getAge() {
+        var today = LocalDate.now();
+        Period age = Period.between(birthDate, today);
+        return age.getYears();
     }
 }

@@ -1,4 +1,4 @@
-package com.iniflex.erp.infra.listdb.exceptions;
+package com.iniflex.erp.application.usecases.exceptions;
 
 public class EmployeeNotFoundException extends RuntimeException {
     public EmployeeNotFoundException() {
