@@ -102,7 +102,9 @@ public class App {
 	}
 
 	private static void increaseAllSalary() {
-		registryEmployeeService.increaseAllSalariesByPercentage(10);		
+		registryEmployeeService.increaseAllSalariesByPercentage(10);	
+		System.out.println("Salarios atualizados em 10%: ");	
+		printFormatted();
 	}
 
 	private static void removeJoao() {
