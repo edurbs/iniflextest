@@ -1,6 +1,8 @@
 package com.iniflex.erp.domain.entities;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -39,7 +41,7 @@ public class Employee extends Person {
 
     public String getFormatedSalary() {        
         var brazilianFormat = NumberFormat.getInstance(new Locale("pt", "BR"));        
-        return brazilianFormat.format(salary);
+        return brazilianFormat.format(salary.setScale(2, RoundingMode.HALF_UP));
     }
 
     public String getFormatedBirhDate(){

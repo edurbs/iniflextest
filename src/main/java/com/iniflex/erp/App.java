@@ -1,10 +1,13 @@
 package com.iniflex.erp;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.iniflex.erp.application.usecases.RegistryEmployeeService;
@@ -19,7 +22,7 @@ public class App {
 		System.out.println("\n3.1 Inserir todos os funcionários, na mesma ordem e informações da tabela acima.");
 		addAll();
 
-		System.out.println("\n3.2 Remover o funcionário “João” da lista.");
+		System.out.println("\n3.2 Remover o funcionário 'João' da lista.");
 		removeJoao();
 
 		System.out.println("\n3.3 Imprimir todos os funcionários com todas suas informações, sendo que:");
@@ -30,7 +33,7 @@ public class App {
 		System.out.println("\n3.4 Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionários com novo valor.");
 		increaseAllSalary();		
 
-		System.out.println("\n3.5 Agrupar os funcionários por função em um MAP, sendo a chave a “função” e o valor a “lista de funcionários”.");
+		System.out.println("\n3.5 Agrupar os funcionários por função em um MAP, sendo a chave a 'função' e o valor a 'lista de funcionários'.");
 		Map<String, List<Employee>> groupByPosition = getGroupByPosition();		
 
 		System.out.println("\n3.6 Imprimir os funcionários, agrupados por função.");
@@ -49,14 +52,35 @@ public class App {
 		System.out.println("\n3.11 Imprimir o total dos salários dos funcionários.");
 		printSumOfSalaries();
 
-
 		System.out.println("\n3.12 Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.");
+		printMinimumWageByEmployee();
 
 	}
 
+	private static void printMinimumWageByEmployee() {
+		List<Employee> foundEmployees = registryEmployeeService.findAll();
+		foundEmployees.forEach(employee -> System.out.println(
+				employee.getName() 
+				+ " ganha " 
+				+ employee.getFormatedSalary()
+				+ " que é correspondente a "
+				+ getHowManyMinimumWage(employee.getSalary())
+				+ " salários mínimos."
+			)
+		);
+	}
+
+	private static String getHowManyMinimumWage(BigDecimal salary) {
+		BigDecimal minimumWage = BigDecimal.valueOf(1212.0);
+		BigDecimal howManyMinimumWage = salary.divide(minimumWage, 1, RoundingMode.HALF_DOWN);
+		return howManyMinimumWage.toString().replace(".", ",");
+	}
+
 	private static void printSumOfSalaries() {
+		var brazilianFormat = NumberFormat.getInstance(new Locale("pt", "BR"));                
 		BigDecimal totalSalary = registryEmployeeService.getSumOfSalaries();
-		System.out.println(totalSalary);
+		String totalSalaryFormatted = brazilianFormat.format(totalSalary.setScale(2, RoundingMode.HALF_UP));
+		System.out.println("Total dos salários: " + totalSalaryFormatted);
 	}
 
 	private static void printEmployeesOrderedByName() {
@@ -102,9 +126,7 @@ public class App {
 	}
 
 	private static void increaseAllSalary() {
-		registryEmployeeService.increaseAllSalariesByPercentage(10);	
-		System.out.println("Salarios atualizados em 10%: ");	
-		printFormatted();
+		registryEmployeeService.increaseAllSalariesByPercentage(10);			
 	}
 
 	private static void removeJoao() {
