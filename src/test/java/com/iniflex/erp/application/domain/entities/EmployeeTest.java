@@ -1,5 +1,7 @@
 package com.iniflex.erp.application.domain.entities;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -139,6 +141,14 @@ public class EmployeeTest {
     void shouldReturnFormatedSalary() {
         var employee = employeeFactory();
         Assertions.assertEquals("2.009,44", employee.getFormatedSalary());
+    }
+
+    @Test
+    void get_age(){
+        var employee1 = employeeFactory();        
+        employee1.setBirthDate(LocalDate.of(2000, 1, 4));                
+        
+        assertEquals(23, employee1.getAge());
     }
 
 }
